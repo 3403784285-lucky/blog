@@ -1,0 +1,70 @@
+---
+import "@/styles/global.css";
+import SEO, { type PageSEO } from "@/components/SEO.astro";
+
+interface Props extends PageSEO {}
+---
+
+<!doctype html>
+<html lang="zh-hans" class="bg-[var(--page-bg)]">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="generator" content={Astro.generator} />
+        <SEO {...Astro.props} />
+        <script is:inline>
+            const setTheme = () => {
+                const theme = (() => {
+                    if (
+                        typeof localStorage !== "undefined" &&
+                        localStorage.getItem("theme")
+                    ) {
+                        return localStorage.getItem("theme");
+                    }
+                    if (
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches
+                    ) {
+                        return "dark";
+                    }
+                    return "light";
+                })();
+
+                if (theme === "light") {
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        "light",
+                    );
+                } else {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                }
+
+                window.localStorage.setItem("theme", theme || "light");
+            };
+            setTheme();
+
+            document.addEventListener("astro:after-swap", setTheme);
+        </script>
+    </head>
+    <body>
+        <slot />
+    </body>
+</html>

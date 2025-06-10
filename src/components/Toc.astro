@@ -1,0 +1,212 @@
+---
+interface Props {
+    headings: {
+        depth: number;
+        slug: string;
+        text: string;
+    }[];
+}
+
+const { headings } = Astro.props;
+
+// 只显示 h2 和 h3 标题
+const filteredHeadings = headings.filter(({ depth }) => depth > 1 && depth < 4);
+---
+
+{
+    filteredHeadings.length > 0 && (
+        <div class="toc-container">
+            <div class="toc-header">
+                <h2 class="toc-title">目录</h2>
+                <button
+                    id="toggle-toc"
+                    class="toc-toggle"
+                    aria-label="折叠目录"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="toc">
+                <ul>
+                    {filteredHeadings.map((heading) => (
+                        <li
+                            class={`depth-${heading.depth}`}
+                            data-heading={heading.slug}
+                        >
+                            <a href={`#${heading.slug}`}>{heading.text}</a>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
+        </div>
+    )
+}
+
+<style>
+    .toc-container {
+        position: sticky;
+        top: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--side-border);
+        background-color: var(--content-bg);
+        padding: 1rem;
+        transition: all 0.3s;
+    }
+
+    .toc-header {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--side-border);
+        padding-bottom: 0.5rem;
+    }
+
+    .toc-title {
+        margin: 0;
+        font-size: 1.125rem;
+        font-weight: bold;
+    }
+
+    .toc-toggle {
+        border-radius: 0.375rem;
+        padding: 0.25rem;
+    }
+
+    .toc-toggle:hover {
+        background-color: var(--btn-plain-bg);
+    }
+
+    .toc-toggle svg {
+        transition: transform 0.3s;
+    }
+
+    .toc-container.collapsed .toc-toggle svg {
+        transform: rotate(180deg);
+    }
+
+    .toc-container.collapsed .toc {
+        display: none;
+    }
+
+    .toc {
+        transition: all 0.3s;
+    }
+
+    .toc ul {
+        margin: 0;
+        list-style: none;
+        padding: 0;
+    }
+
+    .toc li {
+        margin-bottom: 0.5rem;
+        transition: all 0.2s;
+    }
+
+    .toc a {
+        display: block;
+        font-size: 0.875rem;
+        color: var(--text);
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .toc a:hover {
+        color: var(--primary);
+    }
+
+    .depth-2 {
+        margin-left: 0;
+    }
+
+    .depth-3 {
+        margin-left: 1rem;
+    }
+
+    .toc li.active > a {
+        color: var(--primary);
+        font-weight: 500;
+    }
+
+    .toc li.active {
+        transform: translateX(0.5rem);
+    }
+</style>
+
+<script>
+    // 折叠功能
+    const tocContainer = document.querySelector(".toc-container");
+    const toggleButton = document.querySelector("#toggle-toc");
+
+    toggleButton?.addEventListener("click", () => {
+        tocContainer?.classList.toggle("collapsed");
+        // 保存状态到 localStorage
+        localStorage.setItem(
+            "tocCollapsed",
+            tocContainer?.classList.contains("collapsed") ? "true" : "false",
+        );
+    });
+
+    // 恢复折叠状态
+    if (localStorage.getItem("tocCollapsed") === "true") {
+        tocContainer?.classList.add("collapsed");
+    }
+
+    // 滚动高亮
+    const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 1.0,
+    };
+
+    const headings = Array.from(document.querySelectorAll("h2, h3"));
+    const tocItems = document.querySelectorAll(".toc li");
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            const id = entry.target.getAttribute("id");
+            const tocItem = document.querySelector(
+                `.toc li[data-heading="${id}"]`,
+            );
+
+            if (entry.isIntersecting) {
+                // 移除其他项的高亮
+                tocItems.forEach((item) => item.classList.remove("active"));
+                // 添加当前项的高亮
+                tocItem?.classList.add("active");
+            }
+        });
+    }, observerOptions);
+
+    // 观察所有标题元素
+    headings.forEach((heading) => observer.observe(heading));
+
+    // 点击目录项时平滑滚动
+    document.querySelectorAll(".toc a").forEach((link) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute("href")?.slice(1);
+            const targetElement = document.getElementById(targetId || "");
+
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }
+        });
+    });
+</script>

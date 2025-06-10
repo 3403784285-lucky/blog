@@ -1,0 +1,91 @@
+---
+import type { CollectionEntry } from "astro:content";
+import _ from "lodash";
+import dayjs from "dayjs";
+
+interface Props {
+  posts: CollectionEntry<"posts">[];
+}
+
+let { posts } = Astro.props;
+
+const groups = (() => {
+  const groupedPosts = _.groupBy(posts, (post) => {
+    return dayjs(post.data.published).format("YYYY");
+  });
+
+  const groupedPostsArray = Object.keys(groupedPosts).map((key) => ({
+    year: Number.parseInt(key),
+    posts: _.orderBy(
+      groupedPosts[Number.parseInt(key)],
+      [
+        (post) => {
+          return dayjs(post.data.published).format("MM-DD");
+        },
+      ],
+      "desc"
+    ),
+  }));
+
+  groupedPostsArray.sort((a, b) => b.year - a.year);
+  return groupedPostsArray;
+})();
+---
+
+<div class="card-base p-4 md:p-6">
+  {
+    groups.map((group) => (
+      <div>
+        <div class="flex h-[3.75rem] w-full flex-row items-center">
+          <div class="text-75 w-[15%] text-right text-2xl font-bold transition md:w-[10%]">
+            {group.year}
+          </div>
+          <div class="w-[15%] md:w-[10%]">
+            <div class="mx-auto h-3 w-3 overflow-hidden rounded-full border-2 border-[var(--hilight-color)] bg-none" />
+          </div>
+          <div class="text-50 w-[70%] text-left transition md:w-[80%]">
+            {group.posts.length} 文章
+          </div>
+        </div>
+        {group.posts.map((post) => (
+          <div class="group relative h-10 w-full rounded-lg hover:cursor-auto hover:bg-[var(--btn-plain-bg)]">
+            <div class="flex h-full flex-row items-center justify-start">
+              <div class="text-50 w-[15%] text-right text-sm transition md:w-[10%]">
+                {dayjs(post.data.published).format("MM-DD")}
+              </div>
+              <div class="dash-line relative flex h-full w-[15%] items-center md:w-[10%]">
+                <div class="z-50 mx-auto h-1 w-1 rounded bg-[var(--hilight-color)] transition-all group-hover:h-5 group-hover:bg-[var(--hilight-color)]" />
+              </div>
+              <a
+                href={`/post/${post.slug}`}
+                aria-label={post.data.title}
+                class="text-75 w-[70%] overflow-hidden overflow-ellipsis whitespace-nowrap pr-8 text-left font-bold transition-all hover:cursor-pointer group-hover:translate-x-1 group-hover:text-[var(--hilight-color)] md:w-[70%] md:max-w-[70%]"
+              >
+                {post.data.title}
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .dash-line::before {
+    content: "";
+    position: absolute;
+    width: 10%;
+    height: 100%;
+    top: 50%;
+    left: calc(50% - 1px);
+    border-left: 2px dashed rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    transition: all 0.3s;
+    transform: translateY(-50%);
+  }
+
+  html[data-theme="dark"] .dash-line::before {
+    border-left-color: rgba(255, 255, 255, 0.1);
+  }
+</style>

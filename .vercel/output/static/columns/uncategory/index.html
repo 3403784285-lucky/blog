@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="zh-hans" class="bg-[var(--page-bg)]"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/site.webmanifest"><meta name="generator" content="Astro v5.9.2"><!-- SEO --><title>技术文章</title><meta name="description" content="{description}"><link rel="canonical" href="{url}"><link rel="alternate" type="application/rss+xml" title="我的技术博客" href="https://blog-course.vercel.app/rss.xml"><!-- Open Graph --><meta property="og:title" content="{title}"><meta property="og:site_name" content="{siteData.title}"><meta property="og:description" content="{description}"><meta property="og:url" content="{url}"><meta property="og:image" content="{image?.src}"><meta property="og:image:url" content="{image?.src}"><meta property="og:image:secure_url" content="{image?.src}"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="500"><meta property="og:image:height" content="500"><meta property="og:image:alt" content="{image?.alt}"><!-- Twitter --><meta name="twitter:title" content="{title}"><meta name="twitter:description" content="{description}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{image?.src}"><meta name="twitter:image:alt" content="{title}"><meta name="twitter:domain" content="{import.meta.env.SITE}"><!-- JSON LD -->{jsonLD}<script>
+            const setTheme = () => {
+                const theme = (() => {
+                    if (
+                        typeof localStorage !== "undefined" &&
+                        localStorage.getItem("theme")
+                    ) {
+                        return localStorage.getItem("theme");
+                    }
+                    if (
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches
+                    ) {
+                        return "dark";
+                    }
+                    return "light";
+                })();
+
+                if (theme === "light") {
+                    document.documentElement.setAttribute(
+                        "data-theme",
+                        "light",
+                    );
+                } else {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                }
+
+                window.localStorage.setItem("theme", theme || "light");
+            };
+            setTheme();
+
+            document.addEventListener("astro:after-swap", setTheme);
+        </script><style>.dash-line[data-astro-cid-zhxkjw2l]:before{content:"";position:absolute;width:10%;height:100%;top:50%;left:calc(50% - 1px);border-left:2px dashed rgba(0,0,0,.1);pointer-events:none;transition:all .3s;transform:translateY(-50%)}html[data-theme=dark] .dash-line[data-astro-cid-zhxkjw2l]:before{border-left-color:#ffffff1a}
+</style>
+<link rel="stylesheet" href="/_astro/_column_.CXLi99zW.css"><script type="module" src="/_astro/page.7qqag-5g.js"></script></head> <body>  <div id="page" class="flex min-h-screen overflow-hidden rounded-md text-[var(--text)] md:mx-10 md:mt-14"> <div class="hidden min-w-64 bg-[var(--side-bg)] md:block"> <div class="mb-5 flex items-center justify-between px-8"> <a href="/" class="flex flex-row items-center justify-start py-4"> <img src="https://xsgames.co/randomusers/avatar.php?g=pixel" alt width="256" height="256" loading="lazy" decoding="async" class="mr-4 h-10 w-10 rounded-full"> <h1 class="text-lg">我的博客</h1> </a> <button id="themeToggle" data-astro-cid-oemx5le4> <svg width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-astro-cid-oemx5le4> <path class="sun" fill-rule="evenodd" d="M12 17.5a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zm0 1.5a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm12-7a.8.8 0 0 1-.8.8h-2.4a.8.8 0 0 1 0-1.6h2.4a.8.8 0 0 1 .8.8zM4 12a.8.8 0 0 1-.8.8H.8a.8.8 0 0 1 0-1.6h2.5a.8.8 0 0 1 .8.8zm16.5-8.5a.8.8 0 0 1 0 1l-1.8 1.8a.8.8 0 0 1-1-1l1.7-1.8a.8.8 0 0 1 1 0zM6.3 17.7a.8.8 0 0 1 0 1l-1.7 1.8a.8.8 0 1 1-1-1l1.7-1.8a.8.8 0 0 1 1 0zM12 0a.8.8 0 0 1 .8.8v2.5a.8.8 0 0 1-1.6 0V.8A.8.8 0 0 1 12 0zm0 20a.8.8 0 0 1 .8.8v2.4a.8.8 0 0 1-1.6 0v-2.4a.8.8 0 0 1 .8-.8zM3.5 3.5a.8.8 0 0 1 1 0l1.8 1.8a.8.8 0 1 1-1 1L3.5 4.6a.8.8 0 0 1 0-1zm14.2 14.2a.8.8 0 0 1 1 0l1.8 1.7a.8.8 0 0 1-1 1l-1.8-1.7a.8.8 0 0 1 0-1z" data-astro-cid-oemx5le4></path> <path class="moon" fill-rule="evenodd" d="M16.5 6A10.5 10.5 0 0 1 4.7 16.4 8.5 8.5 0 1 0 16.4 4.7l.1 1.3zm-1.7-2a9 9 0 0 1 .2 2 9 9 0 0 1-11 8.8 9.4 9.4 0 0 1-.8-.3c-.4 0-.8.3-.7.7a10 10 0 0 0 .3.8 10 10 0 0 0 9.2 6 10 10 0 0 0 4-19.2 9.7 9.7 0 0 0-.9-.3c-.3-.1-.7.3-.6.7a9 9 0 0 1 .3.8z" data-astro-cid-oemx5le4></path> </svg> </button>  <script>
+    const setToggleListener = () => {
+      let toggleBtn = document.getElementById("themeToggle");
+      const handleToggleClick = () => {
+        const element = document.documentElement;
+        const isDark = element.dataset.theme === "dark";
+        element.dataset.theme = isDark ? "light" : "dark";
+        localStorage.setItem("theme", isDark ? "light" : "dark");
+      };
+  
+      toggleBtn?.addEventListener("click", handleToggleClick);
+    };
+  
+    setToggleListener();
+  
+    document.addEventListener("astro:after-swap", setToggleListener);
+  </script> </div> <ul class="mb-5 border-b border-solid border-b-[var(--side-border)] px-8 py-0 pb-5"> <li> <a href="/" class="flex flex-row justify-start items-center px-4 py-3 rounded-xl mb-2 hover:bg-[var(--btn-plain-bg)] hover:shadow-2xl hover:shadow-[#d4ddff] dark:hover:shadow-inherit hover:text-[--primary] dark:hover:text-inherit"> <svg width="1.01em" height="1em" class="mr-3" data-icon="home">   <symbol id="ai:local:home" viewBox="0 0 1025 1024"><path fill="currentColor" d="M930.714 582.298a35.84 35.84 0 0 1 35.84 35.84v300.748c1.382 41.575-3.636 68.864-22.221 86.016-17.306 15.924-42.394 20.48-74.906 18.74H160.973c-32.973-1.639-58.573-15.002-70.451-41.984-7.885-17.767-11.572-38.759-11.572-62.874V618.086a35.84 35.84 0 0 1 71.68 0v300.698c0 11.878 1.332 21.504 3.584 28.774l1.844 5.018-.154-.512c.051-.666 1.536-.41 6.758-.102H871.27c12.544.716 20.532 0 23.348-.052l.204-.05c-.665-2.714.615-13.825 0-31.847V618.086a35.84 35.84 0 0 1 35.892-35.84zM894.822 951.91l.308.512.512-.204c.153-.103.153-.154 0-.205zM534.221 0c13.517 0 25.6 5.325 36.966 15.206l441.6 416.717a35.84 35.84 0 1 1-49.254 52.07L532.583 77.262 59.29 485.069a35.84 35.84 0 0 1-46.848-54.272L496.077 14.182l4.403-3.276C511.437 4.045 522.394.05 534.272.05z"/></symbol><use href="#ai:local:home"></use>  </svg> <span>首页</span> </a> </li><li> <a href="/columns" class="flex flex-row justify-start items-center px-4 py-3 rounded-xl mb-2 text-[#fff] bg-[var(--primary)]"> <svg width="1em" height="1em" class="mr-3" data-icon="order">   <symbol id="ai:local:order" viewBox="0 0 1024 1024"><path fill="currentColor" d="M874.526 1019.963H147.741c-58.582 0-106.241-47.66-106.241-106.242v-802.98C41.5 52.16 89.16 4.5 147.741 4.5h726.785c58.582 0 106.241 47.66 106.241 106.241V913.72c.001 58.583-47.659 106.243-106.241 106.243M147.741 68.5c-23.292 0-42.241 18.949-42.241 42.241V913.72c0 23.292 18.949 42.242 42.241 42.242h726.785c23.292 0 42.241-18.95 42.241-42.242V110.741c0-23.292-18.949-42.241-42.241-42.241z"/><path fill="currentColor" d="M557.5 260.5h249v64h-249zm-383 152h632v64h-632zm0 153h632v64h-632zm0 156h632v64h-632z"/></symbol><use href="#ai:local:order"></use>  </svg> <span>技术文章</span> </a> </li> </ul> </div> <div class="w-full flex-1 bg-[var(--content-bg)] pb-20">  <ul class="flex flex-row flex-wrap items-center justify-start gap-4 border-b border-b-[var(--content-border)] px-4 py-4 md:px-6 md:py-10"> <li class="flex"> <a href="/columns" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> 全部 </a> </li><li class="flex"> <a href="/columns/next.js" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> Next.js 系列 </a> </li><li class="flex"> <a href="/columns/react" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> React 系列 </a> </li><li class="flex"> <a href="/columns/grow" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> 冴羽答读者问 </a> </li><li class="flex"> <a href="/columns/vuepress" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> VuePress 系列 </a> </li><li class="flex"> <a href="/columns/typescript" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> Typescript 翻译 </a> </li><li class="flex"> <a href="/columns/interview" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> 面试系列 </a> </li><li class="flex"> <a href="/columns/es6" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> ES6 系列 </a> </li><li class="flex"> <a href="/columns/underscore" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> Underscore 系列 </a> </li><li class="flex"> <a href="/columns/javascript" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm bg-[var(--btn-plain-bg)]"> JavaScript 系列 </a> </li><li class="flex"> <a href="/columns/uncategory" class="no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm text-white bg-[var(--primary)]"> 单篇 </a> </li> </ul> <div class="card-base p-4 md:p-6" data-astro-cid-zhxkjw2l>  </div>   </div> <div class="hidden min-w-64 bg-[var(--side-bg)] xl:block">Right</div> <div class="footer-nav fixed bottom-0 z-50 flex w-full items-center justify-around border-t border-t-[var(--nav-border-color)] bg-white p-2 text-sm md:hidden dark:bg-[var(--side-bg)]"> <a href="/" class="flex flex-col items-center justify-center "> <svg width="1.01em" height="1em" viewBox="0 0 1025 1024" class="mb-1" data-icon="home">   <use href="#ai:local:home"></use>  </svg> <span>首页</span> </a><a href="/columns" class="flex flex-col items-center justify-center text-[var(--hilight-color)] dark:text-[#fff]"> <svg width="1em" height="1em" viewBox="0 0 1024 1024" class="mb-1" data-icon="order">   <use href="#ai:local:order"></use>  </svg> <span>文章</span> </a> </div> </div> <div class="footer my-4 text-center text-sm text-[#7e85ad]"> <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">
+浙ICP备xxxxxx号
+</a> </div>  </body></html>

@@ -1,22 +1,121 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import "@/styles/global.css";
+import { Icon } from "astro-icon/components";
+import { cva } from "class-variance-authority";
+import ThemeIcon from "@/components/ThemeIcon.astro";
+import { Image } from "astro:assets";
+import BaseLayout from "./BaseLayout.astro";
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  next?: string;
+  prev?: string;
+}
+
+const { title, ...rest } = Astro.props;
+
+const navList = [
+  { title: "首页", mtitle: "首页", href: "/", icon: "home" },
+  { title: "技术文章", mtitle: "文章", href: "/columns", icon: "order" },
+];
+
+const link = cva(
+  "flex flex-row justify-start items-center px-4 py-3 rounded-xl mb-2",
+  {
+    variants: {
+      intent: {
+        default: [
+          "hover:bg-[var(--btn-plain-bg)]",
+          "hover:shadow-2xl",
+          "hover:shadow-[#d4ddff]",
+          "dark:hover:shadow-inherit",
+          "hover:text-[--primary]",
+          "dark:hover:text-inherit",
+        ],
+        active: ["text-[#fff]", "bg-[var(--primary)]"],
+      },
+    },
+    defaultVariants: {
+      intent: "default",
+    },
+  },
+);
+---
+
+<BaseLayout title={title} {...rest}>
+  <div
+    id="page"
+    class="flex min-h-screen overflow-hidden rounded-md text-[var(--text)] md:mx-10 md:mt-14"
+  >
+    <div class="hidden min-w-64 bg-[var(--side-bg)] md:block">
+      <div class="mb-5 flex items-center justify-between px-8">
+        <a href="/" class="flex flex-row items-center justify-start py-4">
+          <Image
+            src="https://xsgames.co/randomusers/avatar.php?g=pixel"
+            width="256"
+            height="256"
+            alt=""
+            class="mr-4 h-10 w-10 rounded-full"
+          />
+          <h1 class="text-lg">我的博客</h1>
+        </a>
+        <ThemeIcon />
+      </div>
+      <ul
+        class="mb-5 border-b border-solid border-b-[var(--side-border)] px-8 py-0 pb-5"
+      >
+        {
+          navList.map(({ title, href, icon }) => {
+            const isCurrentPage =
+              href == "/"
+                ? Astro.url.pathname === href
+                : Astro.url.pathname.startsWith(href);
+            const intent = isCurrentPage ? "active" : "default";
+            return (
+              <li>
+                <a href={href} class={link({ intent })}>
+                  <Icon name={icon} class="mr-3" />
+                  <span>{title}</span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+    <div class="w-full flex-1 bg-[var(--content-bg)] pb-20">
+      <slot />
+    </div>
+    <div class="hidden min-w-64 bg-[var(--side-bg)] xl:block">Right</div>
+    <div
+      class="footer-nav fixed bottom-0 z-50 flex w-full items-center justify-around border-t border-t-[var(--nav-border-color)] bg-white p-2 text-sm md:hidden dark:bg-[var(--side-bg)]"
+    >
+      {
+        navList.map(({ mtitle, href, icon }) => {
+          const isCurrentPage =
+            href == "/"
+              ? Astro.url.pathname === href
+              : Astro.url.pathname.startsWith(href);
+          if (!mtitle) return null;
+          return (
+            <a
+              href={href}
+              class={`flex flex-col items-center justify-center ${isCurrentPage ? "text-[var(--hilight-color)] dark:text-[#fff]" : ""}`}
+            >
+              <Icon name={icon} class="mb-1" />
+              <span>{mtitle}</span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+  <div class="footer my-4 text-center text-sm text-[#7e85ad]">
+    <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank">
+      浙ICP备xxxxxx号
+    </a>
+  </div>
+</BaseLayout>

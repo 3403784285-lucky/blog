@@ -1,0 +1,75 @@
+---
+import type { InferGetStaticParamsType, GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import { cva } from "class-variance-authority";
+import Layout from "@/layouts/Layout.astro";
+import Timeline from "@/components/Timeline.astro";
+
+export const columnList = [
+  { title: "全部", column: undefined },
+  { title: "Next.js 系列", column: "next.js" },
+  { title: "React 系列", column: "react" },
+  { title: "冴羽答读者问", column: "grow" },
+  { title: "VuePress 系列", column: "vuepress" },
+  { title: "Typescript 翻译", column: "typescript" },
+  { title: "面试系列", column: "interview" },
+  { title: "ES6 系列", column: "es6" },
+  { title: "Underscore 系列", column: "underscore" },
+  { title: "JavaScript 系列", column: "javascript" },
+  { title: "单篇", column: "uncategory" },
+];
+
+const columnCva = cva(
+  "no-underline cursor-pointer px-3 py-2 rounded-md text-center text-sm",
+  {
+    variants: {
+      intent: {
+        default: ["bg-[var(--btn-plain-bg)]"],
+        active: ["text-white", "bg-[var(--primary)]"],
+      },
+    },
+    defaultVariants: {
+      intent: "default",
+    },
+  }
+);
+
+export const getStaticPaths = (async () => {
+  return columnList.map(({ column }) => ({
+    params: { column },
+  }));
+}) satisfies GetStaticPaths;
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+
+const { column: columnPath } = Astro.params as Params;
+
+const posts = await getCollection("posts", ({ data: { columns = [] } }) => {
+  if (!columnPath) return true;
+  if (columns.find((column) => column == columnPath)) return true;
+});
+---
+
+<Layout title="技术文章">
+  <ul
+    class="flex flex-row flex-wrap items-center justify-start gap-4 border-b border-b-[var(--content-border)] px-4 py-4 md:px-6 md:py-10"
+  >
+    {
+      columnList.map(({ title, column }) => {
+        let intent: "default" | "active" = "default";
+        if (column === columnPath) intent = "active";
+        return (
+          <li class="flex">
+            <a
+              href={`/columns${column ? "/" + column : ""}`}
+              class={columnCva({ intent })}
+            >
+              {title}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+  <Timeline {posts} />
+</Layout>

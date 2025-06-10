@@ -1,0 +1,29 @@
+.anchor {
+    position: relative;
+  }
+  
+  .link-anchor {
+    position: absolute;
+    top: 50%;
+    left: -28px;
+    display: flex;
+    width: 28px;
+    height: 28px;
+    margin: auto;
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-50%);
+    border: none;
+  }
+  
+  html[data-theme="dark"] {
+    .link-anchor {
+      fill: #fff;
+    }
+  }
+  
+  .anchor:hover > .link-anchor {
+    opacity: 1;
+  }
+      
